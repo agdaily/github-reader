@@ -1,0 +1,42 @@
+[
+    {
+      "title": "System Design By Karan Pratap Singh",
+      "tags": [],
+      "url": "https://github.com/karanpratapsingh/system-design"
+    },
+    {
+      "title": "System Design Primer",
+      "tags": [],
+      "url": "https://github.com/donnemartin/system-design-primer"
+    },
+    {
+        "title": "Data Engineering Cookbook",
+        "tags": [],
+        "url": "https://github.com/andkret/Cookbook"
+    },
+    {
+        "title": "Coding Interview University",
+        "tags": [],
+        "url": "https://github.com/jwasham/coding-interview-university"
+    },
+    {
+        "title": "System Design Primer",
+        "tags": [],
+        "url": "https://github.com/donnemartin/system-design-primer"
+    },
+    {
+        "title": "Awesome Database Learning",
+        "tags": [],
+        "url": "https://github.com/pingcap/awesome-database-learning"
+    },
+    {
+        "title": "Databases Readings (DB Readings)",
+        "tags": [],
+        "url": "https://github.com/rxin/db-readings"
+    },
+    {
+        "title": "Compute Science",
+        "tags": [],
+        "url": "https://github.com/ossu/computer-science"
+    }
+  ]
