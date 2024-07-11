@@ -1,3 +1,4 @@
+import { fetchReadmeHtmlUrl } from './githubApi';
 export const convertToRawMarkdownUrl = (url: string): string => {
     // console.log("converting to raw url", url);
     url = buildReadmeUrlFromRepoUrl(url)
@@ -96,4 +97,17 @@ export const convertToRawMarkdownUrl = (url: string): string => {
   
     return url;
   };
+
+  export const getReadmeURLFromAPI = async (url: string): Promise<string> => {
+    const params = extractGithubParams(url);
+    if (params) {
+        const readmeURL = await fetchReadmeHtmlUrl(params?.owner, params?.repo);
+        return readmeURL??url;
+    } else {
+        console.log("Couldn't find repo owner and repo slug from url", url);
+    }
+  
+    return url;
+  };
+  
   

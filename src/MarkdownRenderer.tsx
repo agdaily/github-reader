@@ -7,7 +7,7 @@ import remarkGfm from 'remark-gfm';
 import remarkEmoji from 'remark-emoji';
 import CodeBlock from './CodeBlock';
 import './MarkdownRenderer.css';
-import { convertToRawMarkdownUrl, extractGithubParams, extractTitleFromUrl, getGithubRawImageUrl } from './utils';
+import { convertToRawMarkdownUrl, extractGithubParams, extractTitleFromUrl, getGithubRawImageUrl, getReadmeURLFromAPI } from './utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faHome } from '@fortawesome/free-solid-svg-icons';
 
@@ -19,17 +19,26 @@ const MarkdownRenderer: React.FC<{ initialUrl: string }> = ({ initialUrl }) => {
   const location = useLocation();
   const title = extractTitleFromUrl(currentUrl);
 
-  const fetchMarkdown = (url: string) => {
+  const fetchMarkdown = async (url: string) => {
     const rawUrl = convertToRawMarkdownUrl(url);
-    axios.get(rawUrl)
-      .then(response => {
-        setMarkdown(response.data);
-        setHistoryStack((prevStack) => [...prevStack, url]);
-        setCurrentUrl(url);
-      })
-      .catch(error => {
+    try {
+      const response = await axios.get(rawUrl);
+      setMarkdown(response.data);
+      setHistoryStack((prevStack) => [...prevStack, url]);
+      setCurrentUrl(url);
+    } catch (error: any) {
+      if (error.response && error.response.status === 404 && rawUrl.toLowerCase().includes('readme.md')) {
+        const readmeUrl = await getReadmeURLFromAPI(url);
+        console.log("readme url from api is", readmeUrl);
+        if (readmeUrl) {
+          fetchMarkdown(readmeUrl);
+        } else {
+          console.error('README URL could not be fetched from GitHub API.');
+        }
+      } else {
         console.error('Error fetching the markdown file:', error);
-      });
+      }
+    }
   };
 
   useEffect(() => {

@@ -6,6 +6,8 @@ export interface GitHubRepo {
   stargazers_count: number;
 }
 
+const GITHUB_API_BASE_URL = 'https://api.github.com';
+
 export const searchGitHubRepos = async (query: string): Promise<GitHubRepo[]> => {
   if (query.length < 3) return [];
 
@@ -27,5 +29,16 @@ export const searchGitHubRepos = async (query: string): Promise<GitHubRepo[]> =>
   } catch (error) {
     console.error('Error fetching from GitHub API:', error);
     return [];
+  }
+};
+
+
+export const fetchReadmeHtmlUrl = async (owner: string, repo: string): Promise<string | null> => {
+  try {
+    const response = await axios.get(`${GITHUB_API_BASE_URL}/repos/${owner}/${repo}/readme`);
+    return response.data.html_url;
+  } catch (error) {
+    console.error('Error fetching the README HTML URL from GitHub API:', error);
+    return null;
   }
 };
