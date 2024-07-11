@@ -1,6 +1,6 @@
 # Github Reader
 
-Welcome to [GithubReader](https://githubreader.org)! This project allows you to view Markdown files from GitHub repositories without the extra GitHub UI. It's perfect for those who seek a clean, focused reading experience for reading/learning purpose. The app doesn't host any data; everything is fetched directly in the browser at the user's request. 
+Welcome to [GithubReader](https://githubreader.org/)! This project features a quick search function that allows you to perform live searches of GitHub repositories, sorted by the number of stars, and read GitHub Markdown files as if you were reading a book. It's perfect for those who seek a clean, focused reading experience for reading and learning purposes. The app doesn't host any data; everything is fetched directly in the browser at the user's request.
 
 The motivation came from need to read some of the best learning repositories out there in a distraction free maanner. Example 
 
@@ -22,16 +22,7 @@ The app leverages the GitHub API to fetch Markdown files from public repositorie
 
 ## TODOs
 - Fix markdown anchor navigation
-
-## Usage
-
-You can use Github Reader directly at [GithubReader.org](https://githubreader.org).
-
-1. **Enter URL or Search**: Visit the home page, enter a GitHub repository URL, or search using keywords.
-2. **View Markdown**: Select the repository you want to read, and the app will fetch and display its Markdown content.
-3. **Navigate Links**: Click on links within the Markdown to view other documents or images in the repository. Use the back button to return or the home button to start a new search.
-4. **Direct URL Sharing**: You can also directly access specific Markdown files by appending `?url=` with the file's URL. For example: https://githubreader.org/render?url=https://github.com/user/repo/blob/main/README.md This will open the specified Markdown file in the reader.
-
+- add dark theme support
 
 ## Installation (For Contributors)
 
@@ -56,7 +47,3 @@ This project is licensed under the MIT License. For more details, see the [LICEN
 - This project is powered by [React](https://reactjs.org/).
 - Markdown rendering is handled by [React Markdown](https://github.com/remarkjs/react-markdown).
 - Syntax highlighting is provided by [react-syntax-highlighter](https://github.com/conorhastings/react-syntax-highlighter).
-
-## Disclaimer
-
-Github Reader is an independent, non-profit project not affiliated with or endorsed by GitHub, Inc. Project's goal is to enhance the reading experience by providing a cleaner way to view GitHub Markdown content. No data is stored or hosted by the app; all data is fetched directly from GitHub at user's request.
