@@ -15,7 +15,7 @@ export const searchGitHubRepos = async (query: string): Promise<GitHubRepo[]> =>
         q: query,
         sort: 'stars',
         order: 'desc',
-        per_page: 10,
+        per_page: 20,
       },
     });
 
