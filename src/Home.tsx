@@ -8,7 +8,7 @@ import './Home.css';
 const Home: React.FC = () => {
   return (
     <div className="home-container">
-      <div className="header">
+      <div className="home-header">
         <div className="logo-container">
           <img src={logo} alt="Logo" className="logo" />
           <div className="site-title">Github Reader</div>

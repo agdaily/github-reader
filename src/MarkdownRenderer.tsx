@@ -8,17 +8,25 @@ import remarkGfm from 'remark-gfm';
 import remarkEmoji from 'remark-emoji';
 import CodeBlock from './CodeBlock';
 import './MarkdownRenderer.css';
+import './Themes.css';
 import { convertToRawMarkdownUrl, extractGithubParams, extractTitleFromUrl, getGithubRawImageUrl, getReadmeURLFromAPI } from './utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faHome } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faHome, faMoon, faSun, faBook } from '@fortawesome/free-solid-svg-icons';
 
 const MarkdownRenderer: React.FC<{ initialUrl: string }> = ({ initialUrl }) => {
   const [markdown, setMarkdown] = useState<string>('');
   const [historyStack, setHistoryStack] = useState<string[]>([]);
   const [currentUrl, setCurrentUrl] = useState<string>(initialUrl);
+  const [theme, setTheme] = useState<string>(localStorage.getItem('theme') || 'system');
   const navigate = useNavigate();
   const location = useLocation();
   const title = extractTitleFromUrl(currentUrl);
+
+  useEffect(() => {
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    const preferredTheme = theme === 'system' ? systemTheme : theme;
+    document.documentElement.setAttribute('data-theme', preferredTheme);
+  }, [theme]);
 
   const fetchMarkdown = async (url: string) => {
     const rawUrl = convertToRawMarkdownUrl(url);
@@ -91,6 +99,12 @@ const MarkdownRenderer: React.FC<{ initialUrl: string }> = ({ initialUrl }) => {
     }
   };
 
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'kindle' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
+
   return (
     <div className="container">
       <div className="header">
@@ -98,6 +112,9 @@ const MarkdownRenderer: React.FC<{ initialUrl: string }> = ({ initialUrl }) => {
           <FontAwesomeIcon icon={historyStack.length > 1 ? faArrowLeft : faHome} />
         </button>
         <div className="title">{title}</div>
+        <button onClick={toggleTheme} className="theme-button">
+          <FontAwesomeIcon icon={theme === 'dark' ? faBook : theme === 'light' ? faMoon : faSun} />
+        </button>
         <a href={currentUrl} className="github-link" target="_blank" rel="noopener noreferrer">
           View on GitHub
         </a>

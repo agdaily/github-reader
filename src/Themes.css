@@ -1,0 +1,70 @@
+/* Default light theme */
+:root {
+  --background-color: #ffffff;
+  --text-color: #000000;
+  --link-color: #007bff;
+  --header-color: #ffffff;
+  --icon-color: #000000;
+}
+
+/* Dark theme */
+[data-theme='dark'] {
+  --background-color: #1e1e1e;
+  --text-color: #ffffff;
+  --link-color: #1e90ff;
+  --header-color: #1e1e1e;
+  --icon-color: #ffffff;
+}
+
+/* Kindle theme */
+[data-theme='kindle'] {
+  --background-color: #F4ECD8;
+  --text-color: #333333;
+  --link-color: #6b8e23;
+  --header-color: #F4ECD8;
+  --icon-color: #333333;
+}
+
+/* Apply the variables */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+a {
+  color: var(--link-color);
+}
+
+.container {
+  background-color: var(--background-color);
+}
+
+.header {
+  background-color: var(--background-color); /* Change this line to match body background */
+}
+
+.theme-button {
+  background: none;
+  border: none;
+  color: var(--icon-color);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.theme-button svg {
+  margin-right: 5px;
+}
+
+.chevron-button {
+  background: none;
+  border: none;
+  color: var(--icon-color);
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.github-link {
+  color: var(--link-color);
+}
