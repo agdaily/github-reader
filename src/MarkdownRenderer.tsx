@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
+import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import remarkEmoji from 'remark-emoji';
 import CodeBlock from './CodeBlock';
@@ -50,18 +51,24 @@ const MarkdownRenderer: React.FC<{ initialUrl: string }> = ({ initialUrl }) => {
   }, [location.search, initialUrl]);
 
   const handleLinkClick = (href: string) => {
-    if(href.startsWith("#")) {
-      console.log("anchor navigation to be fixed");
+    if (href.includes(".md#") || href.startsWith("#")) {
+      const element = document.getElementById(href.split("#")[1]);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
       return;
     }
+
     const baseUrl = new URL(currentUrl);
     const isRelativeLink = !href.startsWith('http');
-    const resolvedUrl = isRelativeLink ?`${baseUrl.origin}${baseUrl.pathname}/${href}`.toString().replace(/([^:]\/)\/+/g, "$1") : href;
+    const resolvedUrl = isRelativeLink 
+      ? `${baseUrl.origin}${baseUrl.pathname.match(/\.md(\/|#|$)/) ? baseUrl.pathname.replace(/[^/]+$/, '') : baseUrl.pathname}/${href}`
+          .toString()
+          .replace(/([^:]\/)\/+/g, "$1")
+      : href;    
     const isGithubLink = resolvedUrl.includes('github.com') || resolvedUrl.includes('raw.githubusercontent.com');
-    
+
     if (isGithubLink && convertToRawMarkdownUrl(resolvedUrl).includes(".md")) {
-       // Ensure no double slashes
-      // console.log("handle link click", isRelativeLink, baseUrl.origin, baseUrl.pathname, resolvedUrl)
       setMarkdown(''); // Clear current markdown to show loading state if needed
       navigate(`/render?url=${encodeURIComponent(resolvedUrl)}`);
     } else {
@@ -97,7 +104,7 @@ const MarkdownRenderer: React.FC<{ initialUrl: string }> = ({ initialUrl }) => {
       </div>
       <ReactMarkdown
         children={markdown}
-        rehypePlugins={[rehypeRaw]}
+        rehypePlugins={[rehypeRaw, rehypeSlug]}
         remarkPlugins={[remarkGfm, remarkEmoji]}
         components={{
           code({ node, className, children, ...props }) {
@@ -124,7 +131,7 @@ const MarkdownRenderer: React.FC<{ initialUrl: string }> = ({ initialUrl }) => {
             }
           
             return <img src={resolvedSrc} alt={alt} />;
-          }
+          },
         }}
       />
     </div>
