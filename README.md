@@ -39,4 +39,4 @@ If you want to run Github Reader locally and contribute to the project, follow t
 
 ## License
 
-This project is licensed under the MIT License. For more details, see the [LICENSE](LICENSE) file.
+This project is licensed under the Apache License 2.0 License. For more details, see the [LICENSE](LICENSE) file.
