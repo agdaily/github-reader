@@ -40,10 +40,3 @@ If you want to run Github Reader locally and contribute to the project, follow t
 ## License
 
 This project is licensed under the MIT License. For more details, see the [LICENSE](LICENSE) file.
-
-## Acknowledgements
-
-- Most of the initial code is written by ChatGPT, including this Readme.
-- This project is powered by [React](https://reactjs.org/).
-- Markdown rendering is handled by [React Markdown](https://github.com/remarkjs/react-markdown).
-- Syntax highlighting is provided by [react-syntax-highlighter](https://github.com/conorhastings/react-syntax-highlighter).
