@@ -1,3 +1,9 @@
-# https://www.robotstxt.org/robotstxt.html
+# *
 User-agent: *
-Disallow:
+Allow: /
+
+# Host
+Host: https://githubreader.org
+
+# Sitemaps
+Sitemap: https://githubreader.org/sitemap.xml
