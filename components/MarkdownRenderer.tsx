@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router'; // Import useRouter from Next.js
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
@@ -7,8 +7,6 @@ import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import remarkEmoji from 'remark-emoji';
 import CodeBlock from './CodeBlock';
-import './MarkdownRenderer.css';
-import './Themes.css';
 import { convertToRawMarkdownUrl, extractGithubParams, extractTitleFromUrl, getGithubRawImageUrl, getReadmeURLFromAPI } from './utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faHome, faMoon, faSun, faBook } from '@fortawesome/free-solid-svg-icons';
@@ -17,9 +15,8 @@ const MarkdownRenderer: React.FC<{ initialUrl: string }> = ({ initialUrl }) => {
   const [markdown, setMarkdown] = useState<string>('');
   const [historyStack, setHistoryStack] = useState<string[]>([]);
   const [currentUrl, setCurrentUrl] = useState<string>(initialUrl);
-  const [theme, setTheme] = useState<string>(localStorage.getItem('theme') || 'system');
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [theme, setTheme] = useState<string>(typeof window !== 'undefined' ? localStorage.getItem('theme') || 'system' : 'system');
+  const router = useRouter();
   const title = extractTitleFromUrl(currentUrl);
 
   useEffect(() => {
@@ -38,7 +35,6 @@ const MarkdownRenderer: React.FC<{ initialUrl: string }> = ({ initialUrl }) => {
     } catch (error: any) {
       if (error.response && error.response.status === 404 && rawUrl.toLowerCase().includes('readme.md')) {
         const readmeUrl = await getReadmeURLFromAPI(url);
-        console.log("readme url from api is", readmeUrl);
         if (readmeUrl) {
           fetchMarkdown(readmeUrl);
         } else {
@@ -51,12 +47,11 @@ const MarkdownRenderer: React.FC<{ initialUrl: string }> = ({ initialUrl }) => {
   };
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const url = queryParams.get('url') || initialUrl;
+    const url = router.query.url as string || initialUrl;
     if (url) {
       fetchMarkdown(url);
     }
-  }, [location.search, initialUrl]);
+  }, [router.query.url, initialUrl]);
 
   const handleLinkClick = (href: string) => {
     if (href.includes(".md#") || href.startsWith("#")) {
@@ -78,7 +73,7 @@ const MarkdownRenderer: React.FC<{ initialUrl: string }> = ({ initialUrl }) => {
 
     if (isGithubLink && convertToRawMarkdownUrl(resolvedUrl).includes(".md")) {
       setMarkdown(''); // Clear current markdown to show loading state if needed
-      navigate(`/render?url=${encodeURIComponent(resolvedUrl)}`);
+      router.push(`/render?url=${encodeURIComponent(resolvedUrl)}`);
     } else {
       window.open(resolvedUrl, '_blank');
     }
@@ -93,16 +88,18 @@ const MarkdownRenderer: React.FC<{ initialUrl: string }> = ({ initialUrl }) => {
         fetchMarkdown(previousUrl);
         return newStack;
       });
-      navigate(-1);
+      router.back();
     } else {
-      navigate('/');
+      router.push('/');
     }
   };
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'kindle' : 'light';
     setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('theme', newTheme);
+    }
   };
 
   return (

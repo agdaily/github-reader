@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 import debounce from 'lodash.debounce';
-import './Search.css';
 import { searchGitHubRepos, GitHubRepo } from './githubApi';
 
 interface Repository {
@@ -16,7 +15,7 @@ const Search: React.FC = () => {
   const [results, setResults] = useState<Repository[]>([]);
   const [githubResults, setGitHubResults] = useState<GitHubRepo[]>([]);
   const [data, setData] = useState<Repository[]>([]);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +31,7 @@ const Search: React.FC = () => {
   }, []);
 
   const handleSearch = useCallback(debounce(async (value: string) => {
-    if (value.length > 0) {
+    if (value.length >= 3) {
       const gitHubRepos = await searchGitHubRepos(value);
       setGitHubResults(gitHubRepos);
     } else {
@@ -49,7 +48,7 @@ const Search: React.FC = () => {
     );
     if (query){
         setResults([])
-        //Uncomment below line and fill db.json if github public api is no longer available or is very slow
+        // Uncomment below line and fill db.json if GitHub public API is no longer available or is very slow
         // setResults(filteredResults);
     } else {
         setResults([])
@@ -67,7 +66,7 @@ const Search: React.FC = () => {
   };
 
   const handleResultClick = (url: string) => {
-    navigate(`/render?url=${encodeURIComponent(url)}`);
+    router.push(`/render?url=${encodeURIComponent(url)}`);
   };
 
   return (
@@ -75,7 +74,7 @@ const Search: React.FC = () => {
       <div className="search-bar">
         <input
           type="text"
-          placeholder="Search or enter markdown URL. Try sytem design ..."
+          placeholder="Search or enter markdown URL. Try system design ..."
           value={query}
           onChange={handleInputChange}
           className="search-input"
