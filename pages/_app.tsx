@@ -15,6 +15,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         <meta name="description" content="GitHub Reader is a top github repository browser and allows users to view GitHub markdown files in a reader-friendly format." />
         <meta name="keywords" content="GitHub, Markdown, Reader, GitHub Reader, Open Source, top github repository browser" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <Component {...pageProps} />
     </>
