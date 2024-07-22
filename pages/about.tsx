@@ -6,7 +6,7 @@ const About: React.FC = () => {
     <div className="about-container">
       <Head>
         <title>About - GitHub Reader</title>
-        <meta name="description" content="Learn more about GitHub Reader, a tool for viewing GitHub markdown files in a reader-friendly format." />
+        <meta name="description" content="Learn more about GitHub Reader, a tool for browsing top github repositories and viewing GitHub markdown files in a reader-friendly format." />
       </Head>
       <h1>About GitHub Reader</h1>
       <p>
