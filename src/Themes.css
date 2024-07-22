@@ -5,6 +5,10 @@
   --link-color: #007bff;
   --header-color: #ffffff;
   --icon-color: #000000;
+  --table-header-background: #f1f1f1;
+  --code-background: #f5f5f5;
+  --blockquote-background: #f9f9f9;
+  --border-color: #ccc;
 }
 
 /* Dark theme */
@@ -14,6 +18,10 @@
   --link-color: #1e90ff;
   --header-color: #1e1e1e;
   --icon-color: #ffffff;
+  --table-header-background: #333333;
+  --code-background: #2d2d2d;
+  --blockquote-background: #2e2e2e;
+  --border-color: #444;
 }
 
 /* Kindle theme */
@@ -23,6 +31,10 @@
   --link-color: #6b8e23;
   --header-color: #F4ECD8;
   --icon-color: #333333;
+  --table-header-background: #e0dcc2;
+  --code-background: #e8e3d3;
+  --blockquote-background: #e8e3d3;
+  --border-color: #d3cdb8;
 }
 
 /* Apply the variables */
@@ -40,7 +52,7 @@ a {
 }
 
 .header {
-  background-color: var(--background-color); /* Change this line to match body background */
+  background-color: var(--header-color);
 }
 
 .theme-button {
@@ -67,4 +79,36 @@ a {
 
 .github-link {
   color: var(--link-color);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid var(--border-color);
+}
+
+th {
+  background-color: var(--table-header-background);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 8px;
+}
+
+td {
+  border: 1px solid var(--border-color);
+  padding: 8px;
+  color: var(--text-color);
+}
+
+pre, code {
+  background-color: var(--code-background);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+blockquote {
+  background-color: var(--blockquote-background);
+  border-left: 5px solid var(--border-color);
+  padding: 10px 20px;
+  margin: 20px 0;
 }

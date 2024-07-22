@@ -32,7 +32,7 @@ const Search: React.FC = () => {
   }, []);
 
   const handleSearch = useCallback(debounce(async (value: string) => {
-    if (value.length >= 3) {
+    if (value.length >= 0) {
       const gitHubRepos = await searchGitHubRepos(value);
       setGitHubResults(gitHubRepos);
     } else {
