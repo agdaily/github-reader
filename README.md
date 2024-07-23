@@ -2,7 +2,7 @@
 
 Welcome to [GithubReader](https://githubreader.org/)! A top github repository browser, and read GitHub Markdown files as if you were reading a book. It's perfect for those who seek a clean, focused reading experience for reading and learning purposes. The app doesn't host any data; everything is fetched directly in the browser at the user's request.
 
-The motivation came from need to read some of the best learning repositories out there in a distraction free maanner. Example 
+The motivation came from need to read some of the best learning repositories out there in a distraction free maanner. Example [here](https://githubreader.org/render?url=https%3A%2F%2Fgithub.com%2Fsindresorhus%2Fawesome)
 
 ## How It Works
 

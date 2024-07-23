@@ -7,7 +7,7 @@ import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import remarkEmoji from 'remark-emoji';
 import CodeBlock from './CodeBlock';
-import { convertToRawMarkdownUrl, extractGithubParams, extractTitleFromUrl, getGithubRawImageUrl, getReadmeURLFromAPI } from './utils';
+import { buildGithubURLFromRelativeUrl, convertToRawMarkdownUrl, extractGithubParams, extractTitleFromUrl, getGithubRawImageUrl, getReadmeURLFromAPI, } from './utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faHome, faMoon, faSun, faBook } from '@fortawesome/free-solid-svg-icons';
 
@@ -54,6 +54,8 @@ const MarkdownRenderer: React.FC<{ initialUrl: string }> = ({ initialUrl }) => {
   }, [router.query.url, initialUrl]);
 
   const handleLinkClick = (href: string) => {
+    // TOOD simplify link conversions
+
     if (href.includes(".md#") || href.startsWith("#")) {
       const element = document.getElementById(href.split("#")[1]);
       if (element) {
@@ -64,18 +66,31 @@ const MarkdownRenderer: React.FC<{ initialUrl: string }> = ({ initialUrl }) => {
 
     const baseUrl = new URL(currentUrl);
     const isRelativeLink = !href.startsWith('http');
-    const resolvedUrl = isRelativeLink 
-      ? `${baseUrl.origin}${baseUrl.pathname.match(/\.md(\/|#|$)/) ? baseUrl.pathname.replace(/[^/]+$/, '') : baseUrl.pathname}/${href}`
+    let resolvedUrl = href;
+    if(isRelativeLink) {
+      // TODO simplify this logic
+      resolvedUrl =  `${baseUrl.origin}${baseUrl.pathname.match(/\.md(\/|#|$)/) ? baseUrl.pathname.replace(/[^/]+$/, '') : baseUrl.pathname}/${href}`
           .toString()
           .replace(/([^:]\/)\/+/g, "$1")
-      : href;    
+        
+      if(!href.includes(".md")) {
+        resolvedUrl = buildGithubURLFromRelativeUrl(currentUrl, href);
+        console.log("resolved url", resolvedUrl);
+        console.log(currentUrl, href);
+      }
+    } 
+
     const isGithubLink = resolvedUrl.includes('github.com') || resolvedUrl.includes('raw.githubusercontent.com');
 
     if (isGithubLink && convertToRawMarkdownUrl(resolvedUrl).includes(".md")) {
+      if (resolvedUrl.endsWith("readme"))  resolvedUrl = resolvedUrl.slice(0, -"#readme".length);
+      if (resolvedUrl.endsWith("Readme"))  resolvedUrl = resolvedUrl.slice(0, -"#Readme".length);
+      if (resolvedUrl.endsWith("README"))  resolvedUrl = resolvedUrl.slice(0, -"#README".length);
       setMarkdown(''); // Clear current markdown to show loading state if needed
       router.push(`/render?url=${encodeURIComponent(resolvedUrl)}`);
     } else {
-      window.open(resolvedUrl, '_blank');
+      const openInNewWindow = !resolvedUrl.includes("githubreader.org");
+      window.open(resolvedUrl, openInNewWindow ? '_blank' : '_self');
     }
   };
 

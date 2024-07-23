@@ -67,7 +67,20 @@ export const convertToRawMarkdownUrl = (url: string): string => {
         }
         return null;
   };
-  
+
+  export const buildGithubURLFromRelativeUrl = (currentUrl: string, relativeUrl: string): string => {    
+    const regex = /https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/(.*)/;
+    const match = currentUrl.match(regex);
+    if (match) {
+        const owner = match[1];
+        const repo = match[2];
+        const path = match[3];
+        if(!path.startsWith('tree') || !path.startsWith('blob')) {
+          currentUrl = `https://github.com/${owner}/${repo}/tree/main/${path??"README.md"}`
+        }
+    }
+    return new URL(relativeUrl, currentUrl).toString();
+  };
   
   /**
    * Constructs the complete URL for raw image content on GitHub.
